@@ -1,4 +1,11 @@
+# MacOS
 .DS_Store
+
+# Ignore data
 *.png
 *.jpg
 *.jpeg
+
+# Ignore dataset directory
+dataset/
+
