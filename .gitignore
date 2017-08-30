@@ -9,3 +9,6 @@
 # Ignore dataset directory
 dataset/
 
+# Ignore batch scripts  
+*.sh
+
