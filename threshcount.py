@@ -4,7 +4,7 @@ import sys
 import cv2
 import numpy as np
 
-parser = argparse.ArgumentParser(description = "Enhance a microscope image for viewing or further processing.")
+parser = argparse.ArgumentParser(description = "Applies contrast-limited adaptive histogram equalization and counts bright spots above a threshold.")
 
 # Positionals 
 parser.add_argument("filename", metavar = "filename", help = "A filename corresponding to the input image.")
@@ -29,6 +29,10 @@ if args.filename.split(".")[-1] not in ["png","jpg","jpeg"]:
 
 src = cv2.imread(args.filename,1)
 
+if src is None: 
+	print "Error: invalid input filename - file does not exist."
+	sys.exit()
+
 img = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
 
 clahe = cv2.createCLAHE(clipLimit = args.cliplimit, tileGridSize = (args.gridsize, args.gridsize))
@@ -48,11 +52,16 @@ _, contours, hierarchy = cv2.findContours(cmask,cv2.RETR_TREE,cv2.CHAIN_APPROX_S
 print len(contours)
 
 if args.display: 
-	cv2.namedWindow("cmask", cv2.WINDOW_NORMAL)
+	cv2.namedWindow("Input", cv2.WINDOW_NORMAL)
 	cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
 
-	cv2.imshow("cmask", cv2.resize(src,(1440,900)))
-	cv2.imshow("Output", cv2.resize(img_cmap,(1440,900)))
+	if src.shape[0] > 1440 or src.shape[1] > 900:
+		cv2.imshow("Input", cv2.resize(src,(1440,900)))
+		cv2.imshow("Output", cv2.resize(img_cmap,(1440,900)))
+	else: 
+		cv2.imshow("Input", src)
+		cv2.imshow("Output", img_cmap)
+
 	print "Press any key to continue ..."
 	cv2.waitKey(0)
 

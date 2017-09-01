@@ -40,6 +40,7 @@ if args.output is not None:
 img = cv2.imread(args.filename,1)
 if img is None: 
 	print "Error: invalid input filename - file does not exist."
+	sys.exit()
 
 imgOut = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -52,8 +53,12 @@ if args.colormap:
 if args.display: 
 	cv2.namedWindow("Input", cv2.WINDOW_NORMAL)
 	cv2.namedWindow("Output", cv2.WINDOW_NORMAL)
-	cv2.imshow("Input", cv2.resize(img,(1440,900)))
-	cv2.imshow("Output", cv2.resize(imgOut,(1440,900)))
+	if img.shape[0] > 1440 or img.shape[1] > 900:
+		cv2.imshow("Input", cv2.resize(img,(1440,900)))
+		cv2.imshow("Output", cv2.resize(imgOut,(1440,900)))
+	else: 
+		cv2.imshow("Input", img)
+		cv2.imshow("Output", imgOut)
 	print "Press any key to continue ..."
 	cv2.waitKey(0)
 
