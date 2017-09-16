@@ -12,3 +12,13 @@ dataset/
 # Ignore batch scripts  
 *.sh
 
+# Ignore c++ compilation files
+*.o
+
+# Ignore executable files (compilation results)
+*.exe
+*.dmg
+*.app
+
+# Ignore build directory for dfrasm
+dfrasm/bin/
